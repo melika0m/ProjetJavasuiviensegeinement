@@ -4,6 +4,9 @@ import java.sql.Date;
 import java.util.List;
 import java.util.Scanner;
 
+import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
+import Authentification.LoginForm;
 import dao.AvancementCoursDAO;
 import dao.CourseDAO;
 import dao.DepartmentDAO;
@@ -21,6 +24,7 @@ import models.Department;
 import models.Matiere;
 import models.Professeur;
 import models.Semestre;
+//import Authentification.InsertUser;
 public class Show {
 
 	
@@ -28,7 +32,21 @@ public class Show {
 	
 	    public static void main(String[] args) {
 	        try {
-	            Connection con = dbcnx.getConnection(); // Assurez-vous que cette méthode statique fonctionne correctement
+	            Connection con = dbcnx.getConnection();
+	           
+	            // Assurez-vous que cette méthode statique fonctionne correctement
+	         // Inside Show.java
+	            
+
+	            SwingUtilities.invokeLater(new Runnable() {
+	                public void run() {
+	                    new LoginForm().setVisible(true);
+	                }
+	            });
+	            String username = "Eeee";
+	            String password = "1234";
+	            insertUser(username, password);
+	           
 //	            DepartmentDAO departmentDAO = new DepartmentDAOImpl(con);
 //	            Scanner scanner = new Scanner(System.in);
 //
@@ -107,6 +125,7 @@ public class Show {
             
             AvancementCoursDAO avancementCoursDAO = new CourseDAOImpl(con);
             Scanner scanner4 = new Scanner(System.in);
+	        
 
             while (true) {
                 System.out.println("\nMenu Principal:");
@@ -154,7 +173,15 @@ public class Show {
             e.printStackTrace();
         }
     }
-	    private static void manageAvancementCours(Scanner scanner4, AvancementCoursDAO avancementCoursDAO) throws Exception {
+	    private static void insertUser(String username, String password) {
+			// TODO Auto-generated method stub
+			
+		}
+		protected static void createAndShowGUI() {
+			// TODO Auto-generated method stub
+			
+		}
+		private static void manageAvancementCours(Scanner scanner4, AvancementCoursDAO avancementCoursDAO) throws Exception {
 	        while (true) {
 	            System.out.println("\nGestion des Avancements des Cours:");
 //	            System.out.println("1. Ajouter un avancement");
@@ -666,5 +693,6 @@ public class Show {
                 System.out.println("Semestre supprimé avec succès.");
         }
 	    }
+
 	
 
