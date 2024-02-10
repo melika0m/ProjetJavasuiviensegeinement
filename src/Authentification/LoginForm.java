@@ -21,24 +21,63 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class LoginForm extends JFrame {
-    public LoginForm() {
-        setTitle("Login Form");
-        setSize(300, 150);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLocationRelativeTo(null);
+//    public LoginForm() {
+//        setTitle("Login Form");
+//        setSize(300, 150);
+//        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//        setLocationRelativeTo(null);
+//
+//        // Create UI elements
+//        JTextField usernameField = new JTextField(15);
+//        JPasswordField passwordField = new JPasswordField(15);
+//        JButton loginButton = new JButton("Login");
+//
+//        // Layout
+//        setLayout(new FlowLayout());
+//        add(new JLabel("Username:"));
+//        add(usernameField);
+//        add(new JLabel("Password:"));
+//        add(passwordField);
+//        add(loginButton);
+	public LoginForm() {
+	    setTitle("Login Form");
+	    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	    setLocationRelativeTo(null);
 
-        // Create UI elements
-        JTextField usernameField = new JTextField(15);
-        JPasswordField passwordField = new JPasswordField(15);
-        JButton loginButton = new JButton("Login");
+	    // Maximize the window
+	    setExtendedState(getExtendedState() | JFrame.MAXIMIZED_BOTH);
 
-        // Layout
-        setLayout(new FlowLayout());
-        add(new JLabel("Username:"));
-        add(usernameField);
-        add(new JLabel("Password:"));
-        add(passwordField);
-        add(loginButton);
+	    // Create UI elements
+	    JTextField usernameField = new JTextField(15);
+	    JPasswordField passwordField = new JPasswordField(15);
+	    JButton loginButton = new JButton("Login");
+
+	    // Layout
+	    setLayout(new FlowLayout());
+	    add(new JLabel("Username:"));
+	    add(usernameField);
+	    add(new JLabel("Password:"));
+	    add(passwordField);
+	    add(loginButton);
+
+	    // Login action
+	    loginButton.addActionListener(new ActionListener() {
+	        @Override
+	        public void actionPerformed(ActionEvent e) {
+	            String username = usernameField.getText();
+	            char[] password = passwordField.getPassword();
+
+	            if (authenticate(username, new String(password))) {
+	                JOptionPane.showMessageDialog(LoginForm.this, "You are successfully logged in.");
+	                LoginForm.this.setVisible(false); // Hide login form
+	                new Dashboard().setVisible(true); // Show dashboard
+	            } else {
+	                JOptionPane.showMessageDialog(LoginForm.this, "Invalid username or password.");
+	            }
+	        }
+	    });
+	
+
 
         // Login action
         loginButton.addActionListener(new ActionListener() {
