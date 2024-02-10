@@ -43,9 +43,9 @@ public class Show {
 	                    new LoginForm().setVisible(true);
 	                }
 	            });
-	            String username = "Eeee";
-	            String password = "1234";
-	            insertUser(username, password);
+//	            String username = "Eeee";
+//	            String password = "1234";
+//	            insertUser(username, password);
 	           
 //	            DepartmentDAO departmentDAO = new DepartmentDAOImpl(con);
 //	            Scanner scanner = new Scanner(System.in);

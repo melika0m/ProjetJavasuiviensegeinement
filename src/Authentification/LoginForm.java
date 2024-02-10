@@ -4,6 +4,7 @@ package Authentification;
 import javax.swing.*;
 
 import main.dbcnx;
+import ui.Dashboard;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -13,6 +14,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.security.NoSuchAlgorithmException;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class LoginForm extends JFrame {
     public LoginForm() {
@@ -41,45 +47,40 @@ public class LoginForm extends JFrame {
                 String username = usernameField.getText();
                 char[] password = passwordField.getPassword();
 
+//                if (authenticate(username, new String(password))) {
+//                    JOptionPane.showMessageDialog(LoginForm.this, "You are successfully logged in.");
+//                } else {
+//                    JOptionPane.showMessageDialog(LoginForm.this, "Invalid username or password.");
+//                }
                 if (authenticate(username, new String(password))) {
                     JOptionPane.showMessageDialog(LoginForm.this, "You are successfully logged in.");
+                    LoginForm.this.setVisible(false); // Hide login form
+                    new Dashboard().setVisible(true); // Show dashboard
                 } else {
                     JOptionPane.showMessageDialog(LoginForm.this, "Invalid username or password.");
                 }
+
             }
         });
     }
 
    
-    
+        // Implement your authentication logic here
+    	private boolean authenticate(String username, String password) {
+    	    Connection conn = dbcnx.getConnection();
+    	    if (conn != null) {
+    	        try {
+    	            PreparedStatement pst = conn.prepareStatement("SELECT * FROM users WHERE username=? AND password=?");
+    	            pst.setString(1, username);
+    	            pst.setString(2, password); // In a real application, consider using hashed passwords for security
+    	            ResultSet rs = pst.executeQuery();
+    	            return rs.next(); // Returns true if a match is found
+    	        } catch (Exception e) {
+    	            e.printStackTrace();
+    	        }
+    	    }
+    	    return false;
+    	
 
-    private boolean authenticate(String username, String inputPassword) {
-        Connection conn = dbcnx.getConnection();
-        if (conn != null) {
-            try {
-                // Hash the input password
-                String hashedInputPassword = HashPassword.hashPassword(inputPassword);
-                
-                PreparedStatement pst = conn.prepareStatement("SELECT password FROM users WHERE username=?");
-                pst.setString(1, username);
-                ResultSet rs = pst.executeQuery();
-                
-                if (rs.next()) {
-                    // Compare hashed input password with the stored hash
-                    String storedPasswordHash = rs.getString("password");
-                    return hashedInputPassword.equals(storedPasswordHash);
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            } catch (NoSuchAlgorithmException e) {
-                System.err.println("Hashing algorithm not found: " + e.getMessage());
-            }
-        }
-        return false;
-    }
-
-
-    
-
-   
+    	}   
 }
