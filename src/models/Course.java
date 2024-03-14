@@ -6,21 +6,20 @@ public class Course {
     private String codeCours;
     private int professeurID;
     private int heuresParSemaine;
-    private String semestre;
+    private int semestreID;
     private int volumeHoraireTotal;
     
     public Course() {}
     
-    public Course(int coursID, String nomCours, String codeCours, int professeurID, int heuresParSemaine, String semestre, int volumeHoraireTotal) {
+    public Course(int coursID, String nomCours, String codeCours, int professeurID, int heuresParSemaine, int semestreID, int volumeHoraireTotal) {
         this.coursID = coursID;
         this.nomCours = nomCours;
         this.codeCours = codeCours;
         this.professeurID = professeurID;
         this.heuresParSemaine = heuresParSemaine;
-        this.semestre = semestre;
+        this.semestreID = semestreID; // Use semestreID
         this.volumeHoraireTotal = volumeHoraireTotal;
     }
-    
     public int getCoursID() {
         return coursID;
     }
@@ -61,13 +60,6 @@ public class Course {
         this.heuresParSemaine = heuresParSemaine;
     }
     
-    public String getSemestre() {
-        return semestre;
-    }
-    
-    public void setSemestre(String semestre) {
-        this.semestre = semestre;
-    }
     
     public int getVolumeHoraireTotal() {
         return volumeHoraireTotal;
@@ -75,5 +67,14 @@ public class Course {
     
     public void setVolumeHoraireTotal(int volumeHoraireTotal) {
         this.volumeHoraireTotal = volumeHoraireTotal;
+    }
+
+	
+    public int getSemestreID() {
+        return semestreID;
+    }
+    
+    public void setSemestreID(int semestreID) {
+        this.semestreID = semestreID;
     }
 }

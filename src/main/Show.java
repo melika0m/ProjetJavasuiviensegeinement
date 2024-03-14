@@ -1,5 +1,6 @@
 package main;
 import java.sql.Connection;
+
 import java.sql.Date;
 import java.util.List;
 import java.util.Scanner;
@@ -43,12 +44,13 @@ public class Show {
 	                    new LoginForm().setVisible(true);
 	                }
 	            });
+	           
 //	            String username = "Eeee";
 //	            String password = "1234";
 //	            insertUser(username, password);
 	           
-//	            DepartmentDAO departmentDAO = new DepartmentDAOImpl(con);
-//	            Scanner scanner = new Scanner(System.in);
+	            DepartmentDAO departmentDAO = new DepartmentDAOImpl(con);
+	            Scanner scanner5 = new Scanner(System.in);
 //
 //	            while (true) {
 //	                System.out.println("\nMenu:");
@@ -80,10 +82,10 @@ public class Show {
 //	                        System.out.println(department != null ? department : "Département non trouvé.");
 //	                        break;
 //	                    case 3:
-//	                        List<Department> departments = departmentDAO.getAllDepartments();
-//	                        for (Department dep : departments) {
-//	                            System.out.println(dep);
-//	                        }
+	                        List<Department> departments = departmentDAO.getAllDepartments();
+	                        for (Department dep : departments) {
+	                            System.out.println(dep);
+	                        }
 //	                        break;
 //	                    case 4:
 //	                        System.out.println("Entrez l'ID du département à mettre à jour: ");
@@ -123,8 +125,10 @@ public class Show {
             CourseDAO courseDAO = new CourseDAOImpl(con);
             Scanner scanner3 = new Scanner(System.in);
             
-            AvancementCoursDAO avancementCoursDAO = new CourseDAOImpl(con);
+            CourseDAOImpl avancementCoursDAO = new CourseDAOImpl(con);
             Scanner scanner4 = new Scanner(System.in);
+            
+            
 	        
 
             while (true) {
@@ -158,7 +162,7 @@ public class Show {
                         break;
                     case 5:
                     	//gggggg
-                    	manageAvancementCours(scanner4, avancementCoursDAO);
+//                    	manageAvancementCours(scanner4, avancementCoursDAO);
                         break;
                     case 6:
                         // Quitter
@@ -326,7 +330,7 @@ public class Show {
 	        int volumeHoraireTotal = scanner3.nextInt();
 	        scanner3.nextLine(); // Consume newline
 	        
-	        Course course = new Course(coursID, nomCours, codeCours, professeurID, heuresParSemaine, semestre, volumeHoraireTotal);
+	        Course course = new Course();
 	        courseDAO.addCourse(course);
 	        System.out.println("Cours ajouté avec succès.");
 	    }
@@ -337,7 +341,7 @@ public class Show {
 	        
 	        Course course = courseDAO.getCourse(coursID);
 	        if (course != null) {
-	            System.out.println("Cours ID: " + course.getCoursID() + ", Nom: " + course.getNomCours() + ", Code: " + course.getCodeCours() + ", Professeur ID: " + course.getProfesseurID() + ", Heures par semaine: " + course.getHeuresParSemaine() + ", Semestre: " + course.getSemestre() + ", Volume horaire total: " + course.getVolumeHoraireTotal());
+	            System.out.println("Cours ID: " + course.getCoursID() + ", Nom: " + course.getNomCours() + ", Code: " + course.getNomCours() + ", Professeur ID: " + course.getProfesseurID() + ", Heures par semaine: " + course.getHeuresParSemaine() + ", Semestre: " + course.getSemestreID() + ", Volume horaire total: " + course.getVolumeHoraireTotal());
 	        } else {
 	            System.out.println("Aucun cours trouvé avec l'ID " + coursID);
 	        }
@@ -348,7 +352,7 @@ public class Show {
 	            System.out.println("Aucun cours disponible.");
 	        } else {
 	            for (Course course : courses) {
-	                System.out.println("Cours ID: " + course.getCoursID() + ", Nom: " + course.getNomCours() + ", Code: " + course.getCodeCours() + ", Professeur ID: " + course.getProfesseurID() + ", Heures par semaine: " + course.getHeuresParSemaine() + ", Semestre: " + course.getSemestre() + ", Volume horaire total: " + course.getVolumeHoraireTotal());
+	                System.out.println("Cours ID: " + course.getCoursID() + ", Nom: " + course.getNomCours() + ", Code: " + course.getNomCours() + ", Professeur ID: " + course.getProfesseurID() + ", Heures par semaine: " + course.getHeuresParSemaine() + ", Semestre: " + course.getSemestreID() + ", Volume horaire total: " + course.getVolumeHoraireTotal());
 	            }
 	        }
 	    }
@@ -377,7 +381,7 @@ public class Show {
 	        int volumeHoraireTotal = scanner3.nextInt();
 	        scanner3.nextLine(); // Consume newline
 	        
-	        Course course = new Course(coursID, nomCours, codeCours, professeurID, heuresParSemaine, semestre, volumeHoraireTotal);
+	        Course course = new Course();
 	        courseDAO.updateCourse(course);
 	        System.out.println("Cours mis à jour avec succès.");
 	    }
@@ -540,31 +544,34 @@ public class Show {
         } 
 
 
-    private static void addProfesseur(Scanner scanner, ProfesseurDAO professeurDAO) throws Exception {
-        System.out.print("Entrez l'ID du professeur: ");
-        int id = scanner.nextInt();
-        scanner.nextLine(); // Consommer la ligne restante
-        
-        System.out.print("Entrez le nom du professeur: ");
-        String nom = scanner.nextLine();
-        
-        System.out.print("Entrez le prénom du professeur: ");
-        String prenom = scanner.nextLine();
-        
-        System.out.print("Entrez l'email du professeur: ");
-        String email = scanner.nextLine();
-        
-        System.out.print("Entrez l'ID du département: ");
-        int departementID = scanner.nextInt();
-        
-        Professeur professeur = new Professeur(id, nom, prenom, email, departementID);
-        professeurDAO.addProfesseur(professeur);
-        System.out.println("Professeur ajouté avec succès.");
-    }
+	    private static void addProfesseur(Scanner scanner1, ProfesseurDAO professeurDAO) throws Exception {
+	        System.out.print("Entrez le nom du professeur: ");
+	        String nom = scanner1.nextLine();
 
-    private static void viewProfesseur(Scanner scanner, ProfesseurDAO professeurDAO) throws Exception {
+	        System.out.print("Entrez le prénom du professeur: ");
+	        String prenom = scanner1.nextLine();
+	        
+
+	        System.out.print("Entrez l'email du professeur: ");
+	        String email = scanner1.nextLine();
+
+	        System.out.print("Entrez l'ID du département: ");
+	        int departementID = scanner1.nextInt();
+	        scanner1.nextLine(); // Consume any leftover newline characters
+
+	        System.out.print("Entrez le status du professeur: ");
+	        scanner1.nextLine();
+	        String status = scanner1.nextLine();
+
+	        Professeur professeur = new Professeur(0,nom, prenom, email, departementID, status);
+	        professeurDAO.addProfesseur(professeur);
+	        System.out.println("Professeur ajouté avec succès.");
+	    }
+
+
+    private static void viewProfesseur(Scanner scanner1, ProfesseurDAO professeurDAO) throws Exception {
         System.out.print("Entrez l'ID du professeur à voir: ");
-        int id = scanner.nextInt();
+        int id = scanner1.nextInt();
         Professeur professeur = professeurDAO.getProfesseur(id);
         System.out.println(professeur != null ? professeur : "Professeur non trouvé.");
     }
@@ -574,31 +581,36 @@ public class Show {
         professeurs.forEach(System.out::println);
     }
 
-    private static void updateProfesseur(Scanner scanner, ProfesseurDAO professeurDAO) throws Exception {
+    private static void updateProfesseur(Scanner scanner1, ProfesseurDAO professeurDAO) throws Exception {
         System.out.print("Entrez l'ID du professeur à mettre à jour: ");
-        int id = scanner.nextInt();
-        scanner.nextLine(); // Consommer la ligne restante
+        int id = scanner1.nextInt();
+        scanner1.nextLine(); // Consume any leftover newline characters
 
         System.out.print("Nouveau nom: ");
-        String nom = scanner.nextLine();
+        String nom = scanner1.nextLine();
 
         System.out.print("Nouveau prénom: ");
-        String prenom = scanner.nextLine();
+        String prenom = scanner1.nextLine();
 
         System.out.print("Nouvel email: ");
-        String email = scanner.nextLine();
+        String email = scanner1.nextLine();
 
         System.out.print("Nouvel ID de département: ");
-        int departementID = scanner.nextInt();
+        int departementID = scanner1.nextInt();
+        scanner1.nextLine(); // Consume any leftover newline characters
 
-        Professeur professeur = new Professeur(id, nom, prenom, email, departementID);
+        System.out.print("Nouveau status: ");
+        String status = scanner1.nextLine();
+
+        Professeur professeur = new Professeur(id, nom, prenom, email, departementID, status);
         professeurDAO.updateProfesseur(professeur);
         System.out.println("Professeur mis à jour avec succès.");
     }
 
-    private static void deleteProfesseur(Scanner scanner, ProfesseurDAO professeurDAO) throws Exception {
+
+    private static void deleteProfesseur(Scanner scanner1, ProfesseurDAO professeurDAO) throws Exception {
         System.out.print("Entrez l'ID du professeur à supprimer: ");
-        int id = scanner.nextInt();
+        int id = scanner1.nextInt();
 
         professeurDAO.deleteProfesseur(id);
         System.out.println("Professeur supprimé avec succès.");
@@ -640,21 +652,22 @@ public class Show {
             }
         }
     }
-            private static void addSemestre(Scanner scanner, SemestreDAO semestreDAO) throws Exception {
-            	 System.out.print("Entrez l'ID du semestre: ");
-                 int id1 = scanner.nextInt();
-                 scanner.nextLine();
-                System.out.print("Entrez le nom du semestre: ");
-                scanner.nextLine(); // Consommer la nouvelle ligne
-                String nomSemestre = scanner.nextLine();
-                System.out.print("Entrez le nombre de semaines: ");
-                int nombreDeSemaines = scanner.nextInt();
-                Semestre semestre = new Semestre(id1, nomSemestre, nombreDeSemaines);
-                
-              
-                semestreDAO.addSemestre(semestre);
-                System.out.println("Semestre ajouté avec succès.");
-            }
+    private static void addSemestre(Scanner scanner, SemestreDAO semestreDAO) throws Exception {
+        System.out.print("Entrez le nom du semestre: ");
+        scanner.nextLine(); // Ensure the buffer is clear.
+        String nomSemestre = scanner.nextLine();
+        
+        System.out.print("Entrez le nombre de semaines: ");
+        int nombreDeSemaines = scanner.nextInt();
+        scanner.nextLine(); // Consume newline left-over
+        
+      
+
+        Semestre semestre = new Semestre(0, nomSemestre, nombreDeSemaines); // ID is not needed for insertion
+        
+        semestreDAO.addSemestreAndGetID(semestre);
+        System.out.println("Semestre ajouté avec succès.");
+    }
 
             private static void viewSemestre(Scanner scanner, SemestreDAO semestreDAO) throws Exception {
                 System.out.print("Entrez l'ID du semestre à voir: ");
@@ -672,18 +685,21 @@ public class Show {
             private static void updateSemestre(Scanner scanner, SemestreDAO semestreDAO) throws Exception {
                 System.out.print("Entrez l'ID du semestre à mettre à jour: ");
                 int semestreID = scanner.nextInt();
-                scanner.nextLine(); // Consommer la nouvelle ligne
-                
+                scanner.nextLine(); // Clear the buffer
+
                 System.out.print("Nouveau nom du semestre: ");
                 String nomSemestre = scanner.nextLine();
-                
+
                 System.out.print("Nouveau nombre de semaines: ");
                 int nombreDeSemaines = scanner.nextInt();
+
                 
+
                 Semestre semestre = new Semestre(semestreID, nomSemestre, nombreDeSemaines);
                 semestreDAO.updateSemestre(semestre);
                 System.out.println("Semestre mis à jour avec succès.");
             }
+
 
             private static void deleteSemestre(Scanner scanner, SemestreDAO semestreDAO) throws Exception {
                 System.out.print("Entrez l'ID du semestre à supprimer: ");

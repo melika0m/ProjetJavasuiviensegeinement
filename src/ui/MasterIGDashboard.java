@@ -49,38 +49,42 @@ public class MasterIGDashboard extends JFrame {
 //        });
         startYearButton.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
+//            public void actionPerformed(ActionEvent e) {
                 // Create a popup menu for options
-                JPopupMenu popupMenu = new JPopupMenu();
-                
-                // Create menu items
-                JMenuItem s1Option = new JMenuItem("S1");
-                JMenuItem s2Option = new JMenuItem("S2");
-                
-                // Add actions to menu items
-                s1Option.addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        // Action for S1
-                        JOptionPane.showMessageDialog(MasterIGDashboard.this, "Option S1 selected");
-                    }
-                });
-                
-                s2Option.addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        // Action for S2
-                        JOptionPane.showMessageDialog(MasterIGDashboard.this, "Option S2 selected");
-                    }
-                });
-                
-                // Add items to popup menu
-                popupMenu.add(s1Option);
-                popupMenu.add(s2Option);
-                
-                // Show popup menu
-                popupMenu.show(startYearButton, startYearButton.getWidth()/2, startYearButton.getHeight()/2);
-            }
+//            	 @Override
+            	    public void actionPerformed(ActionEvent e) {
+            	        new SemestreForm().setVisible(true);
+            	    }
+//                JPopupMenu popupMenu = new JPopupMenu();
+//                
+//                // Create menu items
+//                JMenuItem s1Option = new JMenuItem("S1");
+//                JMenuItem s2Option = new JMenuItem("S2");
+//                
+//                // Add actions to menu items
+//                s1Option.addActionListener(new ActionListener() {
+//                    @Override
+//                    public void actionPerformed(ActionEvent e) {
+//                        // Action for S1
+//                        JOptionPane.showMessageDialog(MasterIGDashboard.this, "Option S1 selected");
+//                    }
+//                });
+//                
+//                s2Option.addActionListener(new ActionListener() {
+//                    @Override
+//                    public void actionPerformed(ActionEvent e) {
+//                        // Action for S2
+//                        JOptionPane.showMessageDialog(MasterIGDashboard.this, "Option S2 selected");
+//                    }
+//                });
+//                
+//                // Add items to popup menu
+//                popupMenu.add(s1Option);
+//                popupMenu.add(s2Option);
+//                
+//                // Show popup menu
+//                popupMenu.show(startYearButton, startYearButton.getWidth()/2, startYearButton.getHeight()/2);
+//            }
         });
 
     }

@@ -1,5 +1,6 @@
 package dao;
 
+import models.AvancementCours;
 import models.Course;
 import java.util.List;
 
@@ -9,4 +10,5 @@ public interface CourseDAO {
     List<Course> getAllCourses() throws Exception;
     void updateCourse(Course course) throws Exception;
     void deleteCourse(int coursID) throws Exception;
+	void addAvancement(AvancementCours avancement) throws Exception;
 }

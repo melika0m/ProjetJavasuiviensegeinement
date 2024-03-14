@@ -36,7 +36,7 @@ public class DepartmentDAOImpl implements DepartmentDAO {
         return null;
     }
 
-    @Override
+  
     public List<Department> getAllDepartments() throws SQLException {
         List<Department> departments = new ArrayList<>();
         String query = "SELECT * FROM Departments";

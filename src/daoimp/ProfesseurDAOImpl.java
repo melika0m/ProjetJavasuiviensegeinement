@@ -16,16 +16,53 @@ public class ProfesseurDAOImpl implements ProfesseurDAO {
 
     @Override
     public void addProfesseur(Professeur professeur) throws SQLException {
-        String query = "INSERT INTO Professeurs (ProfesseurID, Nom, Prenom, Email, DepartementID) VALUES (?, ?, ?, ?, ?)";
-        try (PreparedStatement pstmt = con.prepareStatement(query)) {
-            pstmt.setInt(1, professeur.getProfesseurID());
-            pstmt.setString(2, professeur.getNom());
-            pstmt.setString(3, professeur.getPrenom());
-            pstmt.setString(4, professeur.getEmail());
-            pstmt.setInt(5, professeur.getDepartementID());
+        // Adjusted query to exclude ProfesseurID and include Status
+        String query = "INSERT INTO Professeurs (Nom, Prenom, Email, DepartementID, Status) VALUES (?, ?, ?, ?, ?)";
+        try (PreparedStatement pstmt = con.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+            pstmt.setString(1, professeur.getNom());
+            pstmt.setString(2, professeur.getPrenom());
+            pstmt.setString(3, professeur.getEmail());
+            pstmt.setInt(4, professeur.getDepartementID());
+            pstmt.setString(5, professeur.getstatus()); // Include Status
             pstmt.executeUpdate();
+
+            try (ResultSet generatedKeys = pstmt.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    professeur.setProfesseurID(generatedKeys.getInt(1)); // Capture the generated ProfesseurID
+                } else {
+                    throw new SQLException("Creating professeur failed, no ID obtained.");
+                }
+            }
         }
     }
+    @Override
+    public int addProfesseurAndGetId(Professeur professeur) throws SQLException {
+        String query = "INSERT INTO Professeurs (Nom, Prenom, Email, DepartementID, Status) VALUES (?, ?, ?, ?, ?)";
+        int generatedId = 0;
+
+        try (PreparedStatement pstmt = con.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+            pstmt.setString(1, professeur.getNom());
+            pstmt.setString(2, professeur.getPrenom());
+            pstmt.setString(3, professeur.getEmail());
+            pstmt.setInt(4, professeur.getDepartementID());
+            pstmt.setString(5, professeur.getstatus());
+
+            int affectedRows = pstmt.executeUpdate();
+            if (affectedRows == 0) {
+                throw new SQLException("Creating professeur failed, no rows affected.");
+            }
+
+            try (ResultSet generatedKeys = pstmt.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    generatedId = generatedKeys.getInt(1);
+                } else {
+                    throw new SQLException("Creating professeur failed, no ID obtained.");
+                }
+            }
+        }
+        return generatedId; // Return the generated ID
+    }
+
 
     @Override
     public Professeur getProfesseur(int professeurID) throws SQLException {
@@ -34,7 +71,15 @@ public class ProfesseurDAOImpl implements ProfesseurDAO {
             pstmt.setInt(1, professeurID);
             ResultSet rs = pstmt.executeQuery();
             if (rs.next()) {
-                return new Professeur(rs.getInt("ProfesseurID"), rs.getString("Nom"), rs.getString("Prenom"), rs.getString("Email"), rs.getInt("DepartementID"));
+                // Adjust to include Status in the returned Professeur object
+                return new Professeur(
+                    rs.getInt("ProfesseurID"), 
+                    rs.getString("Nom"), 
+                    rs.getString("Prenom"), 
+                    rs.getString("Email"), 
+                    rs.getInt("DepartementID"),
+                    rs.getString("Status") // Retrieve Status
+                );
             }
         }
         return null;
@@ -46,7 +91,14 @@ public class ProfesseurDAOImpl implements ProfesseurDAO {
         String query = "SELECT * FROM Professeurs";
         try (Statement stmt = con.createStatement(); ResultSet rs = stmt.executeQuery(query)) {
             while (rs.next()) {
-                professeurs.add(new Professeur(rs.getInt("ProfesseurID"), rs.getString("Nom"), rs.getString("Prenom"), rs.getString("Email"), rs.getInt("DepartementID")));
+                professeurs.add(new Professeur(
+                    rs.getInt("ProfesseurID"), 
+                    rs.getString("Nom"), 
+                    rs.getString("Prenom"), 
+                    rs.getString("Email"), 
+                    rs.getInt("DepartementID"),
+                    rs.getString("Status") // Include Status
+                ));
             }
         }
         return professeurs;
@@ -54,13 +106,15 @@ public class ProfesseurDAOImpl implements ProfesseurDAO {
 
     @Override
     public void updateProfesseur(Professeur professeur) throws SQLException {
-        String query = "UPDATE Professeurs SET Nom = ?, Prenom = ?, Email = ?, DepartementID = ? WHERE ProfesseurID = ?";
+        // Adjust query to include Status in the update
+        String query = "UPDATE Professeurs SET Nom = ?, Prenom = ?, Email = ?, DepartementID = ?, Status = ? WHERE ProfesseurID = ?";
         try (PreparedStatement pstmt = con.prepareStatement(query)) {
             pstmt.setString(1, professeur.getNom());
             pstmt.setString(2, professeur.getPrenom());
             pstmt.setString(3, professeur.getEmail());
             pstmt.setInt(4, professeur.getDepartementID());
-            pstmt.setInt(5, professeur.getProfesseurID());
+            pstmt.setString(5, professeur.getstatus()); // Update Status
+            pstmt.setInt(6, professeur.getProfesseurID());
             pstmt.executeUpdate();
         }
     }
@@ -73,4 +127,15 @@ public class ProfesseurDAOImpl implements ProfesseurDAO {
             pstmt.executeUpdate();
         }
     }
+
+//	public int addProfesseurAndGetId(Professeur professeur) {
+//		// TODO Auto-generated method stub
+//		return 0;
+//	}
+//
+//	@Override
+//	public void addProfesseur(Professeur professeur) throws SQLException {
+//		// TODO Auto-generated method stub
+//		
+//	}
 }

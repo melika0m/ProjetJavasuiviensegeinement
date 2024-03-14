@@ -25,17 +25,22 @@ public class Department {
     public String getDepartmentName() {
         return departmentName;
     }
+    @Override
+    public String toString() {
+        return departmentName; // Just return the name for display in JComboBox
+    }
+
 
     public void setDepartmentName(String departmentName) {
         this.departmentName = departmentName;
     }
-
-    // toString() pour l'affichage
-    @Override
-    public String toString() {
-        return "Department{" +
-                "departmentID=" + departmentID +
-                ", departmentName='" + departmentName + '\'' +
-                '}';
-    }
 }
+    // toString() pour l'affichage
+//    @Override
+//    public String toString() {
+//        return "Department{" +
+//                "departmentID=" + departmentID +
+//                ", departmentName='" + departmentName + '\'' +
+//                '}';
+//    }
+//}
